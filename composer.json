@@ -1,0 +1,21 @@
+{
+	"name": "mmh-goslar/kirby-oveda",
+	"description": "Kirby Oveda Plugin",
+	"license": "MIT",
+	"type": "kirby-plugin",
+	"version": "1.0.0",
+	"authors": [
+		{
+			"name": "stuffdev.de",
+			"email": "stuff@stuffdev.de"
+		}
+	],
+	"require": {
+		"getkirby/composer-installer": "^1.1"
+	},
+	"config": {
+		"allow-plugins": {
+			"getkirby/composer-installer": true
+		}
+	}
+}
