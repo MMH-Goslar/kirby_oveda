@@ -28,11 +28,13 @@ class Organization {
      * @return Organization
      */
     public static function from_json($json): Organization {
-        $organizer = new Organization($json["id"], $json["name"]);
-        $organizer->description = $json["description"];
-        $organizer->email = $json["email"];
-        $organizer->fax = $json["fax"];
-        $organizer->location = Location::from_json($json["location"]);
+        $organizer = new Organization($json->id, $json->name);
+        $organizer->description = $json->description ?? "";
+        $organizer->email = $json->email ?? "";
+        $organizer->fax = $json->fax ?? "";
+        if (isset($json->location)) {
+            $organizer->location = Location::from_json($json->location);
+        }
         return $organizer;
     }
 }

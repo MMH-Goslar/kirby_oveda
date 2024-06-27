@@ -16,15 +16,19 @@ load([
 Kirby::plugin('mmh-goslar/kirby-oveda', [
 
   'areas' => [
-    'events' => [
+    'organizers' => [
         'label' => 'Oveda',
         'icon'  => 'oveda',
         'menu'  => true,
 
         'views' => [
-          require __DIR__.'/views/events.php'
+          require __DIR__.'/views/organizations.php'
             
             
+        ],
+
+        'searches' => [
+          'organizations' => require __DIR__.'/searches/organizations.php'
         ]
     ]
   ]

@@ -1,6 +1,6 @@
 <template>
 	<k-panel-inside>
-		<k-header>Events</k-header>
+		<k-header>Veranstalter</k-header>
         <k-text>
             Veranstaltungen: {{ events.total }}
         </k-text>
@@ -8,12 +8,13 @@
             Seite: {{ events.page }}
         </k-text>
         <k-text>
-            Elemente: {{Object.values(events.events).length}}
+            Elemente: {{Object.values(events.organizations).length}}
         </k-text>
-		<k-items v-if="events.events" class="elements" :items="events.events">
+		<k-items v-if="events.organizations" items="1" class="elements" layout="cardlets">
 
             <k-item
-                :text="item.name"
+                v-for="(value, index) in events.organizations"
+                :text="value.name"
                 :key="index"
                 :info="value.description"
                 layout="carlets"

@@ -1,6 +1,6 @@
 <?php
 
-namespace Kirby\Organizations;
+namespace Kirby\Events;
 
 use Kirby\Events\Event;
 use Kirby\Data\Data;
@@ -11,7 +11,7 @@ use Kirby\Exception\NotFoundException;
 use Kirby\Toolkit\V;
 use Kirby\Http\Remote;
 
-class Organisations
+class Organizations
 {
 
     /**
@@ -35,17 +35,21 @@ class Organisations
     public int $next_num = 0;
 
     public SearchAttributes $search;
-    protected static string $base_url = "https://oveda.de/api/v1/";
 
 
 
     public object $error;
 
-    public function __construct(array $events = []) {
-        $this->events = $events;
+    public function __construct(array $organizations = []) {
+        $this->organizations = $organizations;
         $this->search = new SearchAttributes();
     }
 
+    public static function fetch_orgas(): Organizations {
+        $organizations = new Organizations();
+        $organizations->fetch();
+        return $organizations;
+    }
 
     /**
      * Creates a new event list from API with current SearchAttributes in $this->search
@@ -56,20 +60,18 @@ class Organisations
     {
         $query_url = API::$base_url."organizations";
         $searchString = $this->search->toSearchString();
-
         $response = Remote::get($query_url.$searchString);
-
-        if($response->getStatusCode() !== 200) {
+        if($response->code() !== 200) {
             throw new NotFoundException("Server isnt reachable");
         } else {
             $data = $response->json(false);
-            $this->has_next = $data->has_next;
-            $this->has_prev = $data->has_prev;
-            $this->next_num = $data->next_num;
+            $this->has_next = $data->has_next ?? 0;
+            $this->has_prev = $data->has_prev ?? 0;
+            $this->next_num = $data->next_num ?? 0;
             $this->page = $data->page;
             $this->pages = $data->pages;
             $this->total = $data->total;
-            $this->events = static::convert_json_to_organisations($data->items);
+            $this->organizations = static::convert_json_to_organisations($data->items);
             return true;
 
         }
@@ -103,11 +105,12 @@ class Organisations
         }
     }
 
+
     public static function convert_json_to_organisations($data): array {
         $organizations = [];
         foreach($data as $item) {
             $organization = Organization::from_json($item);
-            array_push($organisations, $organization);
+            array_push($organizations, $organization);
         }
         return $organizations;
     }

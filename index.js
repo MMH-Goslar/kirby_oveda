@@ -63,7 +63,9 @@
   };
   var _sfc_render = function render() {
     var _vm = this, _c = _vm._self._c;
-    return _c("k-panel-inside", [_c("k-header", [_vm._v("Events")]), _c("k-text", [_vm._v(" Veranstaltungen: " + _vm._s(_vm.events.total) + " ")]), _c("k-text", [_vm._v(" Seite: " + _vm._s(_vm.events.page) + " ")]), _c("k-text", [_vm._v(" Elemente: " + _vm._s(Object.values(_vm.events.events).length) + " ")]), _vm.events.events ? _c("k-items", { staticClass: "elements", attrs: { "items": _vm.events.events } }, [_c("k-item", { key: _vm.index, attrs: { "text": _vm.item.name, "info": _vm.value.description, "layout": "carlets" } })], 1) : _c("div", [_vm._v("No items available")])], 1);
+    return _c("k-panel-inside", [_c("k-header", [_vm._v("Veranstalter")]), _c("k-text", [_vm._v(" Veranstaltungen: " + _vm._s(_vm.events.total) + " ")]), _c("k-text", [_vm._v(" Seite: " + _vm._s(_vm.events.page) + " ")]), _c("k-text", [_vm._v(" Elemente: " + _vm._s(Object.values(_vm.events.organizations).length) + " ")]), _vm.events.organizations ? _c("k-items", { staticClass: "elements", attrs: { "items": "1", "layout": "cardlets" } }, _vm._l(_vm.events.organizations, function(value, index) {
+      return _c("k-item", { key: index, attrs: { "text": value.name, "info": value.description, "layout": "carlets" } });
+    }), 1) : _c("div", [_vm._v("No items available")])], 1);
   };
   var _sfc_staticRenderFns = [];
   _sfc_render._withStripped = true;
@@ -72,12 +74,12 @@
     _sfc_render,
     _sfc_staticRenderFns
   );
-  __component__.options.__file = "/Users/stuff/Documents/projects/GS_MMH_WEB/site/plugins/kirby-oveda/src/components/Events.vue";
-  const Events = __component__.exports;
+  __component__.options.__file = "/Users/stuff/Documents/projects/GS_MMH_WEB/site/plugins/kirby-oveda/src/components/Organziers.vue";
+  const Organizations = __component__.exports;
   window.panel.plugin("mmh-goslar/kirby-oveda", {
     components: {
       oveda: OvedaOverview,
-      "k-events-view": Events
+      "k-events-view": Organizations
     }
   });
 })();
