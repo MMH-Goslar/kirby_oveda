@@ -61,14 +61,16 @@ class Events
         $searchString = $this->search->toSearchString();
 
         $response = Remote::get($query_url.$searchString);
+        var_dump($searchString);
         if($response->code() !== 200) {
             
-            throw new NotFoundException("Server isnt reachable");
+            //throw new NotFoundException("Server isnt reachable");
+            return false;
         } else {
             $data = $response->json(false);
             $this->has_next = $data->has_next;
             $this->has_prev = $data->has_prev;
-            $this->next_num = $data->next_num;
+            $this->next_num = $data->next_num ?? 0;
             $this->page = $data->page;
             $this->pages = $data->pages;
             $this->total = $data->total;

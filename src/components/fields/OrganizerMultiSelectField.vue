@@ -1,5 +1,23 @@
 <template>
-    <k-panel-inside>
+    <k-field
+        class="k-organizer-field"
+    
+        :disabled="disabled"
+        :help="help"
+        :label="label"
+        :required="required"
+        :when="when"
+        >
+        <k-tags
+            :after="after"
+            :before="before"
+            :icon="icon"
+            theme="field"
+            type="text"
+            name="textfield"
+            :value="value"
+            @input="onInput">
+        </k-tags>
         <k-header>Veranstalter</k-header>
         <k-text>
             Veranstaltungen: {{ total }}
@@ -20,19 +38,26 @@
         </div>
 
         <div v-else>No items available</div>
-
-    </k-panel-inside>
-</template>
-
-<script>
-
-export default {
+    </k-field>
+  </template>
+  
+  <script>
+  export default {
     props: {
-        controller: Object
+      after: String,
+      before: String,
+      disabled: Boolean,
+      help: String,
+      icon: String,
+      label: String,
+      required: Boolean,
+      when: String,
+      value: String,
+      controller: Object
     },
-    // Put your section logic here
     created() {
-        console.log(this.controller);
+        this.value = ["test1", "test2"]
+        console.log(this)
     },
     computed: {
         orgs() {
@@ -54,20 +79,20 @@ export default {
             return this.controller.pages
         },
     },
-
-
     methods: {
-        paginate(pagination) {
+      onInput(value) {
+        var value = ["Test", "test2"]
+        console.log("Emitting:", value);
+        this.$emit("input", value);
+      },
+      paginate(pagination) {
             this.$reload({
                 query: {
                     page: pagination.page
                 }
             });
         }
-    }
-}
-</script>
+    },
 
-<style>
-/** Put your CSS here **/
-</style>
+  }
+  </script>
