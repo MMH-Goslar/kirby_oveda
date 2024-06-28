@@ -22,6 +22,7 @@ class Event
     public string $description = "";
 
     public string $link;
+    public string|null $image;
 
     public string $name = "";
     public Organization $organisation;
@@ -49,14 +50,20 @@ class Event
             array_push($event->categories, new Category(id: $category->id, name: $category->name));
         }
 
-        /*foreach($json_data->date_definitions as $date) {
-            $date = $json_data->date_definitions;
+        foreach($json_data->date_definitions as $date) {
+            //$date = $json_data->date_definitions;
 
-            array_push($event->date_definitions, new DateDefinition($date->id, $date->start, $date->end, $date->allday, $date->reccurrence_rule));
-        }*/
+            $date_obj = new DateDefinition($date->id, $date->start);
+            $date_obj->setEnd($date->end);
+            $date_obj->allday = $date->allday ?? false;
+            $date_obj->setRRule($date->recurrence_rule);
+            array_push($event->date_definitions, $date_obj);
+            
+        }
         
         $event->description = $json_data->description;
         $event->link = $json_data->external_link;
+        $event->image = $json_data->photo ? API::$photo_base.$json_data->photo->image_url : null;
         //$event->organization = Organization::from_json($json_data->organization);
             //$json_data->organisation,
         $event->status = $json_data->status ?? "";

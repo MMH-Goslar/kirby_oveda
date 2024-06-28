@@ -4,21 +4,21 @@ namespace Kirby\Events;
 
 use Kirby\Events\Event;
 use Kirby\Data\Data;
-use Kirby\Events\Organization;
+use Kirby\Events\Place;
 use Kirby\Events\SearchAttributes;
 use Kirby\Exception\InvalidArgumentException;
 use Kirby\Exception\NotFoundException;
 use Kirby\Toolkit\V;
 use Kirby\Http\Remote;
 
-class Organizations
+class Places
 {
 
     /**
      * Storing events from actual search
-     * @var array<Organization>
+     * @var array<Place>
      */
-    public array $organizations;
+    public array $places;
     /**
      * If actual search has a next Page
      * @var int
@@ -40,20 +40,20 @@ class Organizations
 
     public object $error;
 
-    public function __construct(array $organizations = []) {
-        $this->organizations = $organizations;
+    public function __construct(array $places = []) {
+        $this->places = $places;
         $this->search = new SearchAttributes();
     }
 
-    public static function fetch_orgas(): Organizations {
-        $organizations = new Organizations([]);
-        $fetching = $organizations->fetch();
-        while($organizations->has_next == 1 && $fetching) {
+    public static function fetch_places(): Places {
+        $places = new Places([]);
+        $fetching = $places->fetch();
+        while($places->has_next == 1 && $fetching) {
             $fetching = false;
-            $organizations->search->page += 1;
-            $fetching = $organizations->fetch();
+            $places->search->page += 1;
+            $fetching = $places->fetch();
         }
-        return $organizations;
+        return $places;
     }
 
     /**
@@ -63,7 +63,7 @@ class Organizations
      */
     public function fetch(): bool
     {
-        $query_url = API::$base_url."organizations";
+        $query_url = API::$base_url."places";
         $searchString = $this->search->toSearchString();
         $response = Remote::get($query_url.$searchString);
         if($response->code() !== 200) {
@@ -76,7 +76,7 @@ class Organizations
             $this->page = $data->page;
             $this->pages = $data->pages;
             $this->total = $data->total;
-            array_push($this->organizations, ...static::convert_json_to_organisations($data->items));
+            array_push($this->places, ...static::convert_json_to_places($data->items));
             //var_dump($this->organizations);
             return true;
 
@@ -112,13 +112,13 @@ class Organizations
     }
 
 
-    public static function convert_json_to_organisations($data): array {
-        $organizations = [];
+    public static function convert_json_to_places($data): array {
+        $places = [];
         foreach($data as $item) {
-            $organization = Organization::from_json($item);
-            array_push($organizations, $organization);
+            $place = place::from_json($item);
+            array_push($places, $place);
         }
-        return $organizations;
+        return $places;
     }
    
 
@@ -129,9 +129,9 @@ class Organizations
      * @param string $id
      * @return Event
      */
-    public function by_id(string $id): Organization 
+    public function by_id(string $id): place 
     {
-        $event = $this->organizations[$id];
+        $event = $this->places[$id];
 
         if (empty($event) === true) {
             throw new NotFoundException('The event could not be found');

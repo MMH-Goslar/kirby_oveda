@@ -1,5 +1,5 @@
 <?php
-
+@include_once __DIR__ . '/vendor/autoload.php';
 load([
   'Kirby\Events\Event' => __DIR__ . '/classes/Event.php',
   'Kirby\Events\Events' => __DIR__ . '/classes/Events.php',
@@ -11,6 +11,7 @@ load([
   'Kirby\Events\Place' => __DIR__ . '/classes/Place.php',
   'Kirby\Events\SearchAttributes' => __DIR__ . '/classes/SearchAttributes.php',
   'Kirby\Events\DateDefinition' => __DIR__ . '/classes/DateDefinition.php',
+  'RRule\RRule' => __DIR__ . '',
 
 
 ]);
