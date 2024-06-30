@@ -9,7 +9,7 @@ class DateDefinition {
     public int $id;
     public DateTime $start;
     public DateTime|null $end;
-    public bool $allDay = false;
+    public bool $allday = false;
     public string $reccurrence_rule;
     public array $excluded_dates = [];
 

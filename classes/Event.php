@@ -55,7 +55,7 @@ class Event
 
             $date_obj = new DateDefinition($date->id, $date->start);
             $date_obj->setEnd($date->end);
-            $date_obj->allday = $date->allday ?? false;
+            $date_obj->allday = isset($date->allday) ? true : false;
             $date_obj->setRRule($date->recurrence_rule);
             array_push($event->date_definitions, $date_obj);
             
