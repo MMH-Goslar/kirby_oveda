@@ -1,6 +1,7 @@
 <?php
 
 namespace Kirby\Events;
+use Kirby\Exception\InvalidArgumentException;
 
 
 class SearchAttributes {
@@ -9,8 +10,10 @@ class SearchAttributes {
     public int $number_of_results;
     public string $organizer_id;
     public string $event_place_id;
-    public string $by_coordinate;
-    public int $distance;
+    private string $latitude;
+    private string $longitude;
+    private int $distance;
+    private bool $coordinate_set = false;
     public string $keyword = "";
     public string $date_from;
     public string $date_to;
@@ -25,7 +28,7 @@ class SearchAttributes {
         $this->number_of_results = $number_of_results;
     }
 
-    public function toSearchString(): string {
+        public function toSearchString(): string {
         $search_string = "?page=".$this->page."&per_page=".$this->number_of_results;
 
         //Apply Organizer ID array if set
@@ -33,7 +36,7 @@ class SearchAttributes {
             $search_string .= "&organization_id=".$this->organizer_id;
         }
 
-        //Apply Organizer ID array if set
+        //Apply Place ID array if set
         if(isset($this->event_place_id) && $this->event_place_id !== "" ) {
             $search_string .= "&event_place_id=".$this->event_place_id;
         }
@@ -50,9 +53,10 @@ class SearchAttributes {
 
 
         //Apply Search By Coordinate and Distance
-        if(isset($this->by_coordinate) && isset($this->distance)) {
-            $search_string .= "&coordinate=".$this->by_coordinate."&distance=".$this->distance;
+        if($this->coordinate_set) {
+            $search_string .= "&coordinate=".$this->latitude.",".$this->longitude."&distance=".$this->distance;
         }
+
         if(isset($this->keyword) &&  $this->keyword !== "") {
             $search_string .= "&keyword=".$this->keyword;
         }
@@ -60,4 +64,22 @@ class SearchAttributes {
         return $search_string;
     }
 
+    public function set_coordinate(string $latitude, string $longitude, int $distance) {
+        if (preg_match("/^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)$/", $latitude)) {
+            $this->latitude = $latitude;
+        } else {
+            throw new InvalidArgumentException("Longitude doesn't fit the neccesary format");
+        }
+        if (preg_match("/^[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/", $longitude)) {
+            $this->longitude = $longitude;
+        } else {
+            throw new InvalidArgumentException("Longitude doesn't fit the neccesary format");
+        }
+        if(preg_match("/^[0-9]{1,5}$/", $distance)) {
+            $this->distance = $distance;
+        } else {
+            throw new InvalidArgumentException("Distance should be between 1 - 99999 m");
+        }
+        $this->coordinate_set = true;
+    }
 }

@@ -16,6 +16,7 @@ load([
 
 ]);
 use Kirby\Events\Organizations;
+use Kirby\Cms\Page;
 
 Kirby::plugin('mmh-goslar/kirby-oveda', [
   'blueprints' => [
@@ -24,10 +25,29 @@ Kirby::plugin('mmh-goslar/kirby-oveda', [
     },
     'fields/placeselect' => function($kirby) {
       return include __DIR__ . '/blueprints/fields/placeselect.php';
-  },
+    },
   ],
   'snippets'=> [
-    'oveda' => __DIR__ . '/snippets/oveda.php'
+    'oveda' => __DIR__ . '/snippets/oveda.php',
+    'oveda_element' => __DIR__ . '/snippets/oveda_element.php'
+  ],
+  'templates' => [
+    'oveda.json' => __DIR__ . '/templates/oveda.json.php'
+  ],
+  'routes' => [
+    [
+      'pattern' => 'oveda.json',
+      'action'  => function () {
+        return new Page([
+          'slug' => 'virtual-reality',
+          'template' => 'oveda.json',
+          'content' => [
+            'title' => 'This is not a real page',
+            'text'  => 'Believe it or not, this page is not in the file system'
+          ]
+        ]);
+      }
+    ]
   ],
 /*  'fields' => [
     'organizerz' => [

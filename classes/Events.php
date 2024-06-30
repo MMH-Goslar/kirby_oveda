@@ -61,7 +61,6 @@ class Events
         $searchString = $this->search->toSearchString();
 
         $response = Remote::get($query_url.$searchString);
-        var_dump($searchString);
         if($response->code() !== 200) {
             
             //throw new NotFoundException("Server isnt reachable");

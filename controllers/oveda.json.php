@@ -9,7 +9,7 @@ return function ($page) {
     $limit = 6;
 
     $events_manager = new Events([]);
-    $search_attributes = new SearchAttributes(1, 6);
+    $search_attributes = new SearchAttributes(1, $limit);
     if ($oveda_search->exists() && $search = $oveda_search->toObject()) {
 
         if ($oveda_search->organziers()->isNotEmpty()) {
