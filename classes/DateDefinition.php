@@ -31,12 +31,24 @@ class DateDefinition {
         }
     }
 
-    function setRRule(string $rrule) {
+    function setRRule(string|null $rrule) {
         if(isset($rrule) && $rrule !== "" ) {
+            $formatter_options = 
+                [
+                    'locale' => 'de_DE',
+                    'date_formatter' => null,
+                    'fallback' => 'en',
+                    'explicit_infinite' => true,
+                    'include_start' => false,
+                    'start_time_only' => true,
+                    'include_until' => false,
+                    'custom_path' => null
+                ]
+            ;
             if( str_contains($rrule, "EXDATE")) {
                  $date_arr = explode("EXDATE:", $rrule);
                  $rrule = new RRule($date_arr[0]);
-                 $this->reccurrence_rule = $rrule->humanReadable(['locale' => 'de']);
+                 $this->reccurrence_rule = $rrule->humanReadable($formatter_options);
 
                  $date = new RSet($rrule);
                  foreach($date->getExDates() as $exdate) {
@@ -49,14 +61,20 @@ class DateDefinition {
 
             } else {
                 $date = new RRule($rrule);
-                $this->reccurrence_rule = $date->humanReadable(['locale' => 'de']);
+                $this->reccurrence_rule = $date->humanReadable($formatter_options);
             }
            
             
         }
 
     }
-    
+    function alreadyEnded() {
+        if(isset($this->end) && $this->end < new DateTime('now') && !isset($this->reccurrence_rule)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 ?>
