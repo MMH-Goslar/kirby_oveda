@@ -35,10 +35,13 @@ if ($oveda_search->exists() && $search = $oveda_search->toObject()) {
     <h1> Veranstaltungen </h1>
     <div class="grid grid-cols-4">
 
-        <div class="from-control col-span-4">
-            <label for="date_from">Suche ab:</label>
-            <input type="date" id="date_from" oninput="dateFromSet(event)">
-        </div>
+    <div class="from-control col-span-4 mb-5">
+        <form class="max-w-sm mx-auto">
+        <label for="date_from block mb-2 text-sm font-medium text-gray-900 dark:text-white">Suche ab:</label>
+        <input type="date" id="date_from bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" oninput="dateFromSet(event)">
+        </form>
+    </div>
+  
 
     </div>
     <div class="list  bg-white grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-3 events">

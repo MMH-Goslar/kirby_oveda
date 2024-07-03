@@ -18,17 +18,17 @@ class Place {
     /**
      * @var string
      */
-    public string $description;
+    public string | null $description;
     /**
      * @var string
      */
 
-    public string $url;
+    public string | null $url;
 
     /**
      * @var string
      */
-    public string $photo;
+    public string | null $photo;
 
     /**
      * @var Location
@@ -46,12 +46,12 @@ class Place {
      * 
      * @return Place
      */
-    public static function from_json(array $json): Place {
-        $place = new self($json["id"], $json["name"]);
-        $place->description = $json["description"];
-        $place->url = $json["url"];
-        $place->photo = $json["photo"];
-        $place->location = Location::from_json($json["location"]);
+    public static function from_json(object $json): Place {
+        $place = new self($json->id, $json->name);
+        $place->description = $json->description;
+        $place->url = $json->url;
+        $place->photo = $json->photo != null ? $json->photo->image_url : null;
+        $place->location = Location::from_json($json->location);
         return $place;
     }
 
