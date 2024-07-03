@@ -35,11 +35,22 @@ if ($oveda_search->exists() && $search = $oveda_search->toObject()) {
     <h1> Veranstaltungen </h1>
     <div class="grid grid-cols-4">
 
-    <div class="from-control col-span-4 mb-5">
-        <form class="max-w-sm mx-auto">
+    <div class="from-control col-span-2 mb-5">
         <label for="date_from block mb-2 text-sm font-medium text-gray-900 dark:text-white">Suche ab:</label>
-        <input type="date" id="date_from bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" oninput="dateFromSet(event)">
-        </form>
+        <input type="date" id="date_from" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" oninput="dateFromSet(event)">
+
+    </div>
+
+    <div class="col-span-4 md:col-span-2 mb-5">
+
+    </div>
+    <div class="col-span-4 md:col-span-2 mb-5">
+
+        <label class="inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="rec_check" value="" class="sr-only peer" onchange="toggleReccurend(event)">
+                <div class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-gold-600"></div>
+                <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Zeige wiederkehrende Termine</span>
+        </label>
     </div>
   
 
@@ -64,14 +75,18 @@ if ($oveda_search->exists() && $search = $oveda_search->toObject()) {
     const element = document.querySelector('.events');
     const button = document.querySelector('.load-more');
     const date_from_element = document.querySelector('#date_from');
+    const check_rec =document.querySelector("#rec_check");
 
 
     let page = 1;
     let results = 6;
+    let exclude_reccurend = false;
+    check_rec.checked =!exclude_reccurend;
 
     let organizer_id = <?= $organizer_id ? 'parseInt(' . $organizer_id . ')' : null ?>;
     let start = "<?= $start ? $start : null ?>";
     date_from_element.value = start;
+    
 
 
     let end = "<?= $end ? $end : null ?>";
@@ -79,7 +94,7 @@ if ($oveda_search->exists() && $search = $oveda_search->toObject()) {
     let longitude = "<?= isset($longitude) ? $longitude : null ?>";
     let distance = "<?= isset($distance) ? $distance->toInt() : null ?>";
 
-    async function fetchEvents() {
+    const fetchEvents = async () => {
         let url = "<?= url('oveda.json') ?>?"
         url += "page=" + page;
         url += "&results=" + results;
@@ -89,6 +104,7 @@ if ($oveda_search->exists() && $search = $oveda_search->toObject()) {
         url += latitude ? "&latitude=" + latitude : "";
         url += longitude ? "&longitude=" + longitude : "";
         url += distance ? "&distance=" + distance : "";
+        url += "&exclude_recurring="+exclude_reccurend;
         //let url = `${window.location.href.split('#')[0]}.json/page:${page}`; // see info
         try {
             const response = await fetch(url);
@@ -114,7 +130,10 @@ if ($oveda_search->exists() && $search = $oveda_search->toObject()) {
     }
 
 
-
+    function toggleReccurend(event) {
+        exclude_reccurend = !event.srcElement.checked
+        fetchEventsAnew();
+    }
 
     function dateFromSet(event) {
         let date_from = new Date(event.srcElement.value);

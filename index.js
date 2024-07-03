@@ -31,7 +31,7 @@
     _sfc_render$3,
     _sfc_staticRenderFns$3
   );
-  __component__$3.options.__file = "/Users/stuff/Documents/projects/GS_MMH_WEB/site/plugins/kirby-oveda/src/components/OvedaOverview.vue";
+  __component__$3.options.__file = "C:/Users/saeng/projects/GS_MMH_WEB/site/plugins/kirby_oveda/src/components/OvedaOverview.vue";
   const OvedaOverview = __component__$3.exports;
   const _sfc_main$2 = {
     props: {
@@ -84,7 +84,7 @@
     _sfc_render$2,
     _sfc_staticRenderFns$2
   );
-  __component__$2.options.__file = "/Users/stuff/Documents/projects/GS_MMH_WEB/site/plugins/kirby-oveda/src/components/Organziers.vue";
+  __component__$2.options.__file = "C:/Users/saeng/projects/GS_MMH_WEB/site/plugins/kirby_oveda/src/components/Organziers.vue";
   const Organizations = __component__$2.exports;
   const _sfc_main$1 = {
     data() {
@@ -106,7 +106,7 @@
     _sfc_render$1,
     _sfc_staticRenderFns$1
   );
-  __component__$1.options.__file = "/Users/stuff/Documents/projects/GS_MMH_WEB/site/plugins/kirby-oveda/src/components/sections/OvedaSection.vue";
+  __component__$1.options.__file = "C:/Users/saeng/projects/GS_MMH_WEB/site/plugins/kirby_oveda/src/components/sections/OvedaSection.vue";
   const Oveda = __component__$1.exports;
   const _sfc_main = {
     props: {
@@ -173,7 +173,7 @@
     _sfc_render,
     _sfc_staticRenderFns
   );
-  __component__.options.__file = "/Users/stuff/Documents/projects/GS_MMH_WEB/site/plugins/kirby-oveda/src/components/fields/OrganizerMultiSelectField.vue";
+  __component__.options.__file = "C:/Users/saeng/projects/GS_MMH_WEB/site/plugins/kirby_oveda/src/components/fields/OrganizerMultiSelectField.vue";
   const OrganizersField = __component__.exports;
   window.panel.plugin("mmh-goslar/kirby-oveda", {
     components: {

@@ -33,7 +33,7 @@ class Place {
     /**
      * @var Location
      */
-    public Location $location;
+    public Location | null $location;
 
     public function __construct(int $id, string $name) {
         $this->id = $id;
@@ -51,7 +51,7 @@ class Place {
         $place->description = $json->description;
         $place->url = $json->url;
         $place->photo = $json->photo != null ? $json->photo->image_url : null;
-        $place->location = Location::from_json($json->location);
+        $place->location = $json->location != "" ? Location::from_json($json->location) : null;
         return $place;
     }
 

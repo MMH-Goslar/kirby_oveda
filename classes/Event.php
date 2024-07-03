@@ -61,9 +61,14 @@ class Event
             if(!$date_obj->alreadyEnded()) {
                 array_push($event->date_definitions, $date_obj);
             }
+
             
             
         }
+
+        usort($event->date_definitions, function($a, $b) {
+            return $a->start <=> $b->start;
+        });
         
         $event->description = $json_data->description;
         $event->link = $json_data->external_link != "" ? $json_data->external_link : API::$photo_base."/event/".$json_data->id;

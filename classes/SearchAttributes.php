@@ -60,6 +60,8 @@ class SearchAttributes {
         if(isset($this->keyword) &&  $this->keyword !== "") {
             $search_string .= "&keyword=".$this->keyword;
         }
+
+        $search_string .= "&sort=start";
         
         return $search_string;
     }
