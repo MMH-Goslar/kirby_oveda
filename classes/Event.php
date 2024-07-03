@@ -66,11 +66,7 @@ class Event
         }
         
         $event->description = $json_data->description;
-        if(isset($json_data->external_link) && $json_data->external_link != "") {
-            $event->link = $json_data->external_link;
-        } else {
-            $event->link = API::$photo_base."/event/".$json_data->id;
-        }
+        $event->link = $json_data->external_link != "" ? $json_data->external_link : API::$photo_base."/event/".$json_data->id;
         $event->image = $json_data->photo ? API::$photo_base.$json_data->photo->image_url : null;
         //$event->organization = Organization::from_json($json_data->organization);
             //$json_data->organisation,

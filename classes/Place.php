@@ -50,7 +50,7 @@ class Place {
         $place = new self($json->id, $json->name);
         $place->description = $json->description;
         $place->url = $json->url;
-        $place->photo = $json->photo ? API::$photo_base.$json->photo->image_url : "";
+        $place->photo = $json->photo != null ? $json->photo->image_url : null;
         $place->location = Location::from_json($json->location);
         return $place;
     }

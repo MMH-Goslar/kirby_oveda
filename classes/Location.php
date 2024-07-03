@@ -9,16 +9,16 @@ class Location {
 
     public string | null $longitude;
 
-    public string | null $postal_code;
+    public string | null $postalCode;
 
     public string | null $street;
 
-    public function __construct(string | null $city, string | null $country, string | null $latitude, string | null $longitude, string | null $postal_code, string | null $street) { 
+    public function __construct(string | null $city, string | null $country, string | null $latitude, string | null $longitude, string | null $postalCode, string | null $street) { 
         $this->city = $city;
         $this->country = $country;
         $this->latitude = $latitude;
         $this->longitude = $longitude;
-        $this->postal_code = $postal_code;
+        $this->postalCode = $postalCode;
         $this->street = $street;
     }
 
