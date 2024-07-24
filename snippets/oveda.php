@@ -1,5 +1,9 @@
-<?php
-if ($oveda_search->exists() && $search = $oveda_search->toObject()) {
+<?php /************** OVEDA - View Snippet*******/
+    /* $oveda_search Oveda Class */
+    /* $date_search:Bool - Show date search */
+    /* $recurrent:Bool - Show Reccurent Toogle */
+
+    if ($oveda_search->exists() && $search = $oveda_search->toObject()) {
 
 
     if ($oveda_search->organziers() !== "") {
@@ -30,43 +34,62 @@ if ($oveda_search->exists() && $search = $oveda_search->toObject()) {
 ?>
 
 
-<div class="mt-4 mb-2 text-gray-900">
+<div class="mt-4 mb-4 text-gray-900">
 
-    <h1> Veranstaltungen </h1>
-    <div class="grid grid-cols-4">
+    <h2 class="text-title mb-2"> Veranstaltungen </h2>
+    
+    
+    <?php if ($date_search || $recurrent): ?>
 
-    <div class="from-control col-span-2 mb-5">
-        <label for="date_from block mb-2 text-sm font-medium text-gray-900 dark:text-white">Suche ab:</label>
-        <input type="date" id="date_from" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" oninput="dateFromSet(event)">
+        <div class="grid grid-cols-4">
+
+
+            <?php if ($date_search): ?>
+                <div class="from-control col-span-2 mb-5">
+                    <label for="date_from block mb-2 text-sm font-medium text-gray-900 dark:text-white">Suche ab:</label>
+                    <input type="date" id="date_from"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        oninput="dateFromSet(event)">
+
+                </div>
+
+                <div class="col-span-4 md:col-span-2 mb-5">
+
+                </div>
+            <?php endif; ?>
+
+            <?php if ($recurrent): ?>
+                <div class="col-span-4 md:col-span-2 mb-5">
+
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="rec_check" value="" class="sr-only peer" onchange="toggleReccurend(event)">
+                        <div
+                            class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-gold-600">
+                        </div>
+                        <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Zeige wiederkehrende
+                            Termine</span>
+                    </label>
+                </div>
+            <?php endif; ?>
+
+
+        </div>
+    <?php endif; ?>
+
+    <div class="content_grid events mb-4">
+
 
     </div>
 
-    <div class="col-span-4 md:col-span-2 mb-5">
-
-    </div>
-    <div class="col-span-4 md:col-span-2 mb-5">
-
-        <label class="inline-flex items-center cursor-pointer">
-            <input type="checkbox" id="rec_check" value="" class="sr-only peer" onchange="toggleReccurend(event)">
-                <div class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-gold-600"></div>
-                <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Zeige wiederkehrende Termine</span>
-        </label>
-    </div>
-  
-
-    </div>
-    <div class="list  bg-white grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-3 events">
-
-
-    </div>
-
+    <p class="text-black text-caption float-end "> powered by: <a class="text-gold" href="https://oveda.de">Oveda</a> Goslar </p>
     <div class="loading_button">
-        <button class="load-more relative h-10 inline-flex items-center justify-center p-3 mb-2 me-2 overflow-hidden text-2xl font-thin text-white rounded-lg group bg-gradient-to-br from-gold-600 to-gold-500 group-hover:from-gold-600 group-hover:to-gold-500 hover:text-white dark:text-white"" accesskey="m">Mehr anzeigen</button>
+        <button
+            class="load-more" data-type="secondary" data-style="pill" >Mehr anzeigen</button>
     </div>
 
 
 
-    <p class="text-black"> powered by: <a class="text-gold" href="https://oveda.de">Oveda</a> Goslar </p>
+    
 
 </div>
 
@@ -75,18 +98,23 @@ if ($oveda_search->exists() && $search = $oveda_search->toObject()) {
     const element = document.querySelector('.events');
     const button = document.querySelector('.load-more');
     const date_from_element = document.querySelector('#date_from');
-    const check_rec =document.querySelector("#rec_check");
+    const check_rec = document.querySelector("#rec_check");
 
 
     let page = 1;
     let results = 6;
     let exclude_reccurend = false;
-    check_rec.checked =!exclude_reccurend;
+
+    <?php if($recurrent): ?>
+        check_rec.checked = !exclude_reccurend;
+    <?php endif ; ?>
 
     let organizer_id = <?= $organizer_id ? 'parseInt(' . $organizer_id . ')' : null ?>;
     let start = "<?= $start ? $start : null ?>";
-    date_from_element.value = start;
-    
+    <?php if($date_search): ?>
+        date_from_element.value = start;
+    <?php endif; ?>
+
 
 
     let end = "<?= $end ? $end : null ?>";
@@ -104,7 +132,7 @@ if ($oveda_search->exists() && $search = $oveda_search->toObject()) {
         url += latitude ? "&latitude=" + latitude : "";
         url += longitude ? "&longitude=" + longitude : "";
         url += distance ? "&distance=" + distance : "";
-        url += "&exclude_recurring="+exclude_reccurend;
+        url += "&exclude_recurring=" + exclude_reccurend;
         //let url = `${window.location.href.split('#')[0]}.json/page:${page}`; // see info
         try {
             const response = await fetch(url);
